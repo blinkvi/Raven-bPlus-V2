@@ -12,7 +12,6 @@
 		"MixinNetworkManager",
 		"MixinEntityPlayerSP",
 		"MIxinNiggerErr",
-		"MixinGuiNewChat",
 		"MixinFontRenderer",
 		"MixinFMLCommonHandler",
 		"MixinSplashProgress"

@@ -6,7 +6,6 @@ public enum Category {
     Player,
     World,
     Render,
-    Minigames,
     Other,
     Client,
     Macros;

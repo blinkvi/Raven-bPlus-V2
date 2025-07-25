@@ -3,9 +3,9 @@ package keystrokesmod.client.utils;
 import java.util.ArrayList;
 import java.util.List;
 
-import keystrokesmod.client.main.Raven;
-import net.minecraft.entity.Entity;
+import keystrokesmod.client.events.RenderTextEvent;
 import net.minecraftforge.client.event.MouseEvent;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class MouseManager implements IMinecraft {
@@ -19,17 +19,16 @@ public class MouseManager implements IMinecraft {
         if (mouse.buttonstate) {
             if (mouse.button == 0) {
                 addLeftClick();
-                if (Raven.debugger && mc.objectMouseOver != null) {
-                    final Entity en = mc.objectMouseOver.entityHit;
-                    if (en == null) {
-                        return;
-                    }
-                }
             }
             else if (mouse.button == 1) {
                 addRightClick();
             }
         }
+    }
+    
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
+    public void onRenderText(RenderTextEvent event) {
+        event.text = event.text.replace("§k", "");
     }
     
     public static void addLeftClick() {

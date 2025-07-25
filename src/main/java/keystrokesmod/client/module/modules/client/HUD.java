@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import org.lwjgl.input.Mouse;
 
 import keystrokesmod.client.clickgui.raven.ClickGui;
+import keystrokesmod.client.events.DragEvent;
 import keystrokesmod.client.main.Raven;
 import keystrokesmod.client.module.Category;
 import keystrokesmod.client.module.ClientModule;
@@ -32,7 +33,6 @@ public class HUD extends ClientModule {
     private final DescriptionSetting desc = new DescriptionSetting("Hide Category", this);
     public final TickSetting hideClient = new TickSetting("Hide Client", this, false);
     public final TickSetting hideCombat = new TickSetting("Hide Combat", this, false);
-    public final TickSetting hideMinigames = new TickSetting("Hide Minigames", this, false);
     public final TickSetting hideMovement = new TickSetting("Hide Movement", this, false);
     public final TickSetting hideOther = new TickSetting("Hide Other", this, false);
     public final TickSetting hidePlayer = new TickSetting("Hide Player", this, false);
@@ -150,9 +150,12 @@ public class HUD extends ClientModule {
         }
     }
     
-    @Override
-    public void onDrag(int mouseX, int mouseY, float partialTicks) {
+    @SubscribeEvent
+    public void onDrag(DragEvent event) {
     	FontRenderer font = getFonts();
+    	int mouseX = event.mouseX;
+    	int mouseY = event.mouseY;
+    	
         List<ClientModule> activeModules = Raven.moduleManager.getModules().stream()
             .filter(module -> module.isEnabled() && module != Raven.moduleManager.getModuleByClazz(HUD.class))
             .collect(Collectors.toList());

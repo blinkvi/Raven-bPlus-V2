@@ -8,6 +8,8 @@ import keystrokesmod.client.utils.Utils;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S03PacketTimeUpdate;
 import net.minecraft.network.play.server.S2BPacketChangeGameState;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 @ModuleInfo(name = "Time Changer", category = Category.Render)
 public class TimeChanger extends ClientModule {
@@ -19,8 +21,8 @@ public class TimeChanger extends ClientModule {
 		clear();
 	}
 	
-	@Override
-    public void onTick() {
+    @SubscribeEvent
+    public void onTick(TickEvent event) {
 		if (!Utils.Player.isPlayerInGame()) return;
 		clear();
 		mc.theWorld.setWorldTime((long) (time.getInput() * 22999));

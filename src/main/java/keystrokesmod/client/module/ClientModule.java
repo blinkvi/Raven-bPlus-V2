@@ -201,7 +201,6 @@ public class ClientModule implements IMinecraft {
         Map<Category, Boolean> visibility = new HashMap<>();
         visibility.put(Category.Client, hud.hideClient.isToggled());
         visibility.put(Category.Combat, hud.hideCombat.isToggled());
-        visibility.put(Category.Minigames, hud.hideMinigames.isToggled());
         visibility.put(Category.Movement, hud.hideMovement.isToggled());
         visibility.put(Category.Other, hud.hideOther.isToggled());
         visibility.put(Category.Player, hud.hidePlayer.isToggled());
@@ -212,12 +211,8 @@ public class ClientModule implements IMinecraft {
         return !visibility.getOrDefault(curCategory, false);
     }
     
-    public void onTick() {}
-    public void onDrag(int mouseX, int mouseY, float partialTicks) {}
     public void onAttackTargetEntityWithCurrentItem(final Entity en) {}
-    
-	public String getUnformattedTextForChat(String text) { return text; }
-    
+        
     public boolean onSendPacket(Packet packet) { return false; }
     public boolean onReceivePacket(Packet packet) { return false; }
 }

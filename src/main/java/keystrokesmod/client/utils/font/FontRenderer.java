@@ -42,9 +42,9 @@ import java.util.Arrays;
 
 import org.lwjgl.opengl.GL11;
 
-import keystrokesmod.client.main.Raven;
-import keystrokesmod.client.module.modules.other.NameHider;
+import keystrokesmod.client.events.RenderTextEvent;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraftforge.common.MinecraftForge;
 
 public class FontRenderer {
     private static final int[] colorCode = new int[32];
@@ -171,9 +171,9 @@ public class FontRenderer {
     public final int drawStringNoFormat(String str, float x, float y, int color, boolean darken) {
         GlStateManager.color(1F, 1F, 1F, 1F);
         str = str.replace("▬", "=");
-        if (Raven.moduleManager.getModuleByClazz(NameHider.class) != null && Raven.moduleManager.getModuleByClazz(NameHider.class).isEnabled()) {
-            str = NameHider.n = str;
-        }
+        RenderTextEvent event = new RenderTextEvent(str);
+        MinecraftForge.EVENT_BUS.post(event);
+        str = event.text;
         y = y - 2;
         x *= 2;
         y *= 2;
@@ -212,9 +212,9 @@ public class FontRenderer {
     public final int drawString(String str, float x, float y, int color, boolean darken) {
         GlStateManager.color(1F, 1F, 1F, 1F);
         str = str.replace("▬", "=");
-        if (Raven.moduleManager.getModuleByClazz(NameHider.class) != null && Raven.moduleManager.getModuleByClazz(NameHider.class).isEnabled()) {
-            str = NameHider.n = str;
-        }
+        RenderTextEvent event = new RenderTextEvent(str);
+        MinecraftForge.EVENT_BUS.post(event);
+        str = event.text;
         y = y - 2;
         x *= 2;
         y *= 2;
@@ -265,9 +265,9 @@ public class FontRenderer {
             return 0;
         }
 
-        if (Raven.moduleManager.getModuleByClazz(NameHider.class) != null && Raven.moduleManager.getModuleByClazz(NameHider.class).isEnabled()) {
-            text = NameHider.n = text;
-        }
+        RenderTextEvent event = new RenderTextEvent(text);
+        MinecraftForge.EVENT_BUS.post(event);
+        text = event.text;
 
         int width = 0;
         char[] currentData = text.toCharArray();
@@ -394,9 +394,9 @@ public class FontRenderer {
 
         int currentColor = color;
         
-        if (Raven.moduleManager.getModuleByClazz(NameHider.class) != null && Raven.moduleManager.getModuleByClazz(NameHider.class).isEnabled()) {
-            text = NameHider.n = text;
-        }
+        RenderTextEvent event = new RenderTextEvent(text);
+        MinecraftForge.EVENT_BUS.post(event);
+        text = event.text;
 
         char[] characters = text.toCharArray();
 

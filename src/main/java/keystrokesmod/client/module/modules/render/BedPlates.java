@@ -171,13 +171,8 @@ public class BedPlates extends ClientModule {
         
         double offset = (blocks.size() * -17.5) / 2;
         for (Block block : blocks) {
-            ResourceLocation rl = getBlockTexture(block);
-            try {
-                mc.getTextureManager().bindTexture(rl);
-                Gui.drawModalRectWithCustomSizedTexture((int) offset, 10, 0, 0, 15, 15, 15, 15);
-            } catch (Exception e) {
-                System.err.println("No se pudo cargar la textura: " + rl.toString());
-            }
+            mc.getTextureManager().bindTexture(getBlockTexture(block));
+            Gui.drawModalRectWithCustomSizedTexture((int) offset, 10, 0, 0, 15, 15, 15, 15);
             offset += 17.5;
         }
         GlStateManager.disableBlend();
@@ -246,15 +241,6 @@ public class BedPlates extends ClientModule {
         return blockPos == blockPos2 || (blockPos.getX() == blockPos2.getX() && blockPos.getY() == blockPos2.getY() && blockPos.getZ() == blockPos2.getZ());
     }
 
-    private String formatBlockName(Block block) {
-        String blockName = Block.blockRegistry.getNameForObject(block).getResourcePath();
-        blockName = blockName.replace("_", " ").toLowerCase();
-        if (blockName.equals("glass") || blockName.contains("stained glass")) return "glass";
-        if (blockName.contains("clay")) return "clay";
-        if (blockName.contains("planks") || blockName.contains("log") || blockName.contains("log2")) return "planks";
-        return blockName;
-    }
-    
     public ResourceLocation getBlockTexture(Block block) {
         if (block == Blocks.bed) {
             return new ResourceLocation("minecraft:textures/items/bed.png");

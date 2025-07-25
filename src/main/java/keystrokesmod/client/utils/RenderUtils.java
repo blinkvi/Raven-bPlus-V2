@@ -343,21 +343,6 @@ public class RenderUtils implements IMinecraft {
 		GL11.glPopMatrix();
 	}
     
-    public static void drawSimpleLine(EntityPlayer player, float partialTicks, Color color) {
-		GlStateManager.pushMatrix();
-		GlStateManager.loadIdentity();
-		ReflectUtil.orientCamera(partialTicks);
-		final double x = player.lastTickPosX + (player.posX - player.lastTickPosX) * partialTicks;
-		final double y = (player.lastTickPosY + (player.posY - player.lastTickPosY) * partialTicks) + 1.62F;
-		final double z = player.lastTickPosZ + (player.posZ - player.lastTickPosZ) * partialTicks;
-		double renderX = ReflectUtil.getRenderPosX();
-		double renderY = ReflectUtil.getRenderPosY();
-		double renderZ = ReflectUtil.getRenderPosZ();
-		drawLine(renderX, renderY + mc.thePlayer.getEyeHeight(), renderZ, x, y, z, color, 1.5F);
-		GlStateManager.resetColor();
-		GlStateManager.popMatrix();
-	}
-
 	public static void drawSimpleBox(EntityPlayer player, int color, float partialTicks) {
 		double expand = 0.0D;
 		float alpha = (float) ((color >> 24) & 255) / 255.0F;

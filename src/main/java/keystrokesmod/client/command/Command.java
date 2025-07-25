@@ -1,7 +1,3 @@
-//Deobfuscated with https://github.com/SimplyProgrammer/Minecraft-Deobfuscator3000 using mappings "C:\Users\Marii\Desktop\ma"!
-
-//Decompiled by Procyon!
-
 package keystrokesmod.client.command;
 
 import keystrokesmod.client.clickgui.raven.*;

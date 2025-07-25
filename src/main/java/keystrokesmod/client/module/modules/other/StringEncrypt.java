@@ -1,6 +1,7 @@
 package keystrokesmod.client.module.modules.other;
 
 import keystrokesmod.client.clickgui.raven.ClickGui;
+import keystrokesmod.client.events.RenderTextEvent;
 import keystrokesmod.client.module.Category;
 import keystrokesmod.client.module.ClientModule;
 import keystrokesmod.client.module.ModuleInfo;
@@ -8,6 +9,8 @@ import keystrokesmod.client.module.setting.impl.DescriptionSetting;
 import keystrokesmod.client.module.setting.impl.SliderSetting;
 import keystrokesmod.client.module.setting.impl.TickSetting;
 import keystrokesmod.client.utils.Utils;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @ModuleInfo(name = "StringEncrypt", category = Category.Other)
 public class StringEncrypt extends ClientModule {
@@ -60,49 +63,52 @@ public class StringEncrypt extends ClientModule {
         }
     }
     
-    @Override
-    public String getUnformattedTextForChat(final String text) {
-        if (mc.currentScreen instanceof ClickGui) {
-            return text;
-        }
-        if (ignoreDebug.isToggled() && mc.gameSettings.showDebugInfo) {
-            return text;
-        }
-        if (ignoreAllGui.isToggled() && mc.currentScreen != null) {
-            return text;
-        }
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
+    public void onRenderText(RenderTextEvent event) {
+        if (mc.currentScreen instanceof ClickGui) return;
+
+        if (ignoreDebug.isToggled() && mc.gameSettings.showDebugInfo) return;
+
+        if (ignoreAllGui.isToggled() && mc.currentScreen != null) return;
+
+        String originalText = event.text;
+
+        String newText = "";
+
         if (value.getInput() == 1.0) {
-            final StringBuilder s2 = new StringBuilder();
-            StringBuilder s3 = new StringBuilder();
-            boolean w = false;
-            for (int i = 0; i < text.length(); ++i) {
-                final String c = Character.toString(text.charAt(i));
-                if (c.equals("�")) {
-                    w = true;
-                    s3.append(c);
-                }
-                else if (w) {
-                    w = false;
-                    s3.append(c);
-                }
-                else {
-                    s2.append((CharSequence)s3).append("�").append("k").append(c);
-                    s3 = new StringBuilder();
+            StringBuilder result = new StringBuilder();
+            StringBuilder formatting = new StringBuilder();
+            boolean inFormat = false;
+
+            for (int i = 0; i < originalText.length(); i++) {
+                String c = Character.toString(originalText.charAt(i));
+                if (c.equals("§")) {
+                    inFormat = true;
+                    formatting.append(c);
+                } else if (inFormat) {
+                    inFormat = false;
+                    formatting.append(c);
+                } else {
+                    result.append(formatting).append("§k").append(c);
+                    formatting.setLength(0);
                 }
             }
-            return s2.toString();
+
+            newText = result.toString();
+        } else if (value.getInput() == 2.0) {
+            newText = originalText.length() > 3 ? originalText.substring(0, 3) : originalText;
+        } else if (value.getInput() == 3.0) {
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < originalText.length(); i++) {
+                char shifted = (char)(originalText.charAt(i) + m3s);
+                sb.append(shifted);
+            }
+            newText = sb.toString();
+        } else {
+            newText = "";
         }
-        if (value.getInput() == 2.0) {
-            return (text.length() > 3) ? text.substring(0, 3) : text;
-        }
-        if (value.getInput() != 3.0) {
-            return "";
-        }
-        final StringBuilder s2 = new StringBuilder();
-        for (int j = 0; j < text.length(); ++j) {
-            final char c2 = (char)(text.charAt(j) + m3s);
-            s2.append(c2);
-        }
-        return s2.toString();
+
+        event.text = newText;
     }
+
 }

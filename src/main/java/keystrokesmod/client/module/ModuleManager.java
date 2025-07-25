@@ -9,7 +9,6 @@ import keystrokesmod.client.main.Raven;
 import keystrokesmod.client.module.modules.client.*;
 import keystrokesmod.client.module.modules.combat.*;
 import keystrokesmod.client.module.modules.macros.*;
-import keystrokesmod.client.module.modules.minigames.*;
 import keystrokesmod.client.module.modules.movement.*;
 import keystrokesmod.client.module.modules.other.*;
 import keystrokesmod.client.module.modules.player.*;
@@ -55,9 +54,7 @@ public class ModuleManager {
             new Trajectories(),
             new Weapon(),
             
-            new MurderMystery(),
-            new BridgeInfo(),
-            
+            new MurderMystery(),            
             new AutoHeader(),
             new BHop(),
             new Boost(),
@@ -93,7 +90,6 @@ public class ModuleManager {
             new RightClicker(),
             new SafeWalk(),
             
-            new AntiShuffle(),
             new BedPlates(),
             new Chams(),
             new ChestESP(),

@@ -1,20 +1,36 @@
 package keystrokesmod.client.module.modules.other;
 
+import keystrokesmod.client.events.RenderTextEvent;
 import keystrokesmod.client.module.Category;
 import keystrokesmod.client.module.ClientModule;
 import keystrokesmod.client.module.ModuleInfo;
+import keystrokesmod.client.utils.Utils;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @ModuleInfo(name = "NameHider", category = Category.Other)
 public class NameHider extends ClientModule {
-	public static String n = "You";
-	public static String playerNick = "";
+	public static String name = "";
+	
+	@SubscribeEvent(priority = EventPriority.HIGHEST)
+	public void onRenderText(RenderTextEvent event) {
+		if (!Utils.Player.isPlayerInGame()) return;
 
-	@Override
-	public String getUnformattedTextForChat(String text) {
-		if (mc.thePlayer != null) {
-			text = playerNick.isEmpty() ? text.replace(mc.thePlayer.getName(), n) : text.replace(playerNick, n);
+		String text = event.text;
+		String ownName = mc.getSession().getUsername();
+		String displayName = checkName();
+
+		if (text.startsWith("/") || text.startsWith(".")) {
+			return;
 		}
 
-		return text;
+		if (text.contains(ownName)) {
+			text = text.replace(ownName, displayName);
+			event.text = text;
+		}
+	}
+	
+	public String checkName() {
+		return name.isEmpty() ? "You" : name;
 	}
 }

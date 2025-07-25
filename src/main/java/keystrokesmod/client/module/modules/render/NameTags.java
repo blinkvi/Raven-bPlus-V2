@@ -7,8 +7,8 @@ import keystrokesmod.client.module.Category;
 import keystrokesmod.client.module.ClientModule;
 import keystrokesmod.client.module.ModuleInfo;
 import keystrokesmod.client.module.modules.world.AntiBot;
-import keystrokesmod.client.module.setting.impl.TickSetting;
 import keystrokesmod.client.module.setting.impl.SliderSetting;
+import keystrokesmod.client.module.setting.impl.TickSetting;
 import keystrokesmod.client.utils.Utils;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
@@ -46,7 +46,7 @@ public class NameTags extends ClientModule {
             String str = en.getDisplayName().getFormattedText();
             if (c.isToggled()) {
                 final double r = en.getHealth() / en.getMaxHealth();
-                final String h = ((r < 0.3) ? "�c" : ((r < 0.5) ? "�6" : ((r < 0.7) ? "�e" : "�a"))) + Utils.Java.round(en.getHealth(), 1);
+                final String h = ((r < 0.3) ? "§c" : ((r < 0.5) ? "§6" : ((r < 0.7) ? "§e" : "§a"))) + Utils.Java.round(en.getHealth(), 1);
                 str = str + " " + h;
             }
             GlStateManager.pushMatrix();

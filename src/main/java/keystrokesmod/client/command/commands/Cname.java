@@ -16,7 +16,7 @@ public class Cname extends Command
             this.incorrectArgs();
             return;
         }
-        NameHider.n = args[0];
-        Terminal.print("Nick has been set to: " + NameHider.n);
+        NameHider.name = args[0];
+        Terminal.print("Nick has been set to: " + NameHider.name);
     }
 }

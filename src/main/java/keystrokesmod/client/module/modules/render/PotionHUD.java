@@ -10,6 +10,7 @@ import org.lwjgl.opengl.GL11;
 
 import keystrokesmod.client.clickgui.raven.ClickGui;
 import keystrokesmod.client.clickgui.theme.Theme;
+import keystrokesmod.client.events.DragEvent;
 import keystrokesmod.client.module.Category;
 import keystrokesmod.client.module.ClientModule;
 import keystrokesmod.client.module.ModuleInfo;
@@ -126,8 +127,10 @@ public class PotionHUD extends ClientModule {
         }
     }
 
-    @Override
-    public void onDrag(int mouseX, int mouseY, float partialTicks) {
+    @SubscribeEvent
+    public void onDrag(DragEvent event) {
+    	int mouseX = event.mouseX;
+    	int mouseY = event.mouseY;
         boolean mouseDown = Mouse.isButtonDown(0);
 
         float width = widthAnimation.getOutput();

@@ -19,7 +19,6 @@ import keystrokesmod.client.utils.ReflectUtil;
 import keystrokesmod.client.utils.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.inventory.GuiChest;
 import net.minecraft.client.gui.inventory.GuiInventory;
@@ -42,10 +41,7 @@ public class LeftClicker extends ClientModule {
 
     private long lastClick;
     private long leftHold;
-    private boolean allowedClick;
     public static boolean breakTimeDone;
-    private double breakBlockFinishWaitTime;
-    private boolean watingForBreakTimeout;
     private boolean leftDown;
     private long leftDownTime;
     private long leftUpTime;
@@ -58,7 +54,6 @@ public class LeftClicker extends ClientModule {
 
     @Override
     public void onEnable() {
-        this.allowedClick = false;
         this.rand = new Random();
     }
     
@@ -68,10 +63,10 @@ public class LeftClicker extends ClientModule {
         this.leftUpTime = 0L;
     }
     
-    @Override
-    public void onTick() {
+    @SubscribeEvent
+    public void onTick(TickEvent event) {
         final Reach reach = (Reach) Raven.moduleManager.getModuleByClazz(Reach.class);
-        if (!this.isEnabled() || !Mouse.isButtonDown(0) || !reach.call()) {
+        if (!Mouse.isButtonDown(0) || !reach.call()) {
             mc.entityRenderer.getMouseOver(1.0f);
         }
     }
