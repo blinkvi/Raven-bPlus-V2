@@ -1,0 +1,14 @@
+.gradle
+.project
+.classpath
+.settings
+bin/
+Haru-Lite-main_Client.launch
+run/
+.//build
+build/libs
+*.iml
+*.ipr
+*.iws
+.idea
+build
