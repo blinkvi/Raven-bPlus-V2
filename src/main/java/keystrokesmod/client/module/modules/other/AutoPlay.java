@@ -8,6 +8,8 @@ import keystrokesmod.client.module.Category;
 import keystrokesmod.client.module.ClientModule;
 import keystrokesmod.client.module.ModuleInfo;
 import keystrokesmod.client.module.setting.impl.DescriptionSetting;
+import keystrokesmod.client.module.setting.impl.SliderSetting;
+import keystrokesmod.client.utils.Clock;
 import keystrokesmod.client.utils.Utils;
 import net.minecraft.network.play.client.C01PacketChatMessage;
 import net.minecraft.scoreboard.Scoreboard;
@@ -18,30 +20,33 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 public class AutoPlay extends ClientModule {
 	
 	private final DescriptionSetting desc = new DescriptionSetting("Only for Universocraft", this);
+	private final SliderSetting delay = new SliderSetting("Delay", this, 0, 0, 600, 50);
+	 private Clock clock = new Clock(0);
 	
 	private Map<String, String> uniCommands = new HashMap<>();
 	
 	@SubscribeEvent
 	public void onInbound(ClientChatReceivedEvent event) {
 	    if (!Utils.Player.isPlayerInGame()) return;
-	    
-        String receiveMessage = event.message.getUnformattedText();
-        String game = getDetectedGame(mc.theWorld.getScoreboard());
-
-        uniCommands.put("ArenaPvP", "/leave");
-        uniCommands.put("BedWars", "/bw random");
-        uniCommands.put("TNTTag", "/playagain");
-        uniCommands.put("SkyWars", "/sw random");
-        uniCommands.put("SkyWars Speed", "/sw random");
-
-        if (uniCommands.containsKey(game)) {
-            if (shouldSendCommand(game, receiveMessage)) {
-                String command = uniCommands.get(game);
-                if (mc.thePlayer != null) {
-                	mc.thePlayer.sendQueue.addToSendQueue(new C01PacketChatMessage(command));
-                }
-            }
-        }
+	    if (clock.finished((long) delay.getInput())) {
+	        String receiveMessage = event.message.getUnformattedText();
+	        String game = getDetectedGame(mc.theWorld.getScoreboard());
+	
+	        uniCommands.put("ArenaPvP", "/leave");
+	        uniCommands.put("BedWars", "/bw random");
+	        uniCommands.put("TNTTag", "/playagain");
+	        uniCommands.put("SkyWars", "/sw random");
+	        uniCommands.put("SkyWars Speed", "/sw random");
+	
+	        if (uniCommands.containsKey(game)) {
+	            if (shouldSendCommand(game, receiveMessage)) {
+	                String command = uniCommands.get(game);
+	                if (mc.thePlayer != null) {
+	                	mc.thePlayer.sendQueue.addToSendQueue(new C01PacketChatMessage(command));
+	                }
+	            }
+	        }
+	    }
 	}
 
 	private boolean shouldSendCommand(String game, String message) {

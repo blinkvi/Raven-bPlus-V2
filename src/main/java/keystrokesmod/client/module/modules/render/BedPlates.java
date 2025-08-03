@@ -46,10 +46,11 @@ public class BedPlates extends ClientModule {
     private BlockPos[] bed = null;
     private Clock clock = new Clock(0);
     
-    private final TickSetting firstBed = new TickSetting("RenderFirstBed", this, true);
-    private final TickSetting showDistance = new TickSetting("ShowDistance", this, true);
+    private final TickSetting firstBed = new TickSetting("Render First Bed", this, true);
+    private final TickSetting showDistance = new TickSetting("Show Distance", this, true);
     private final SliderSetting range = new SliderSetting("Range", this, 10, 2, 30, 1);
     private final SliderSetting layers = new SliderSetting("Layers", this, 3, 1, 10, 1);
+    public final SliderSetting plateScale = new SliderSetting("Scale", this, 1.0, 0.5, 3.0, 0.05);
     
     @Override
     public void update() {
@@ -142,43 +143,56 @@ public class BedPlates extends ClientModule {
         }
     }
 
-    private void drawPlate(BlockPos blockPos, int index) {
-        float rotateX = mc.gameSettings.thirdPersonView == 2 ? -1.0F : 1.0F;
-        glPushMatrix();
-        glDisable(GL_DEPTH_TEST);
-        GlStateManager.enableBlend();
-        GlStateManager.blendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        glTranslatef((float) (blockPos.getX() - mc.getRenderManager().viewerPosX + 0.5), (float) (blockPos.getY() - mc.getRenderManager().viewerPosY + 2), (float) (blockPos.getZ() - mc.getRenderManager().viewerPosZ + 0.5));
-        glNormal3f(0.0F, 1.0F, 0.0F);
-        glRotatef(-mc.getRenderManager().playerViewY, 0.0F, 1.0F, 0.0F);
-        glRotatef(mc.getRenderManager().playerViewX, rotateX, 0.0F, 0.0F);
-        glScaled(-0.01666666753590107D * Math.sqrt(mc.thePlayer.getDistance(blockPos.getX(), blockPos.getY(), blockPos.getZ())), -0.01666666753590107D * Math.sqrt(mc.thePlayer.getDistance(blockPos.getX(), blockPos.getY(), blockPos.getZ())), 0.01666666753590107D * Math.sqrt(mc.thePlayer.getDistance(blockPos.getX(), blockPos.getY(), blockPos.getZ())));
-        List<Block> blocks = bedBlocks.get(index);
-        int minWidth = 17;
-        int blockWidth = 17;
-        int totalWidth = Math.max(minWidth, blocks.size() * blockWidth);
+	private void drawPlate(BlockPos blockPos, int index) {
+	    float rotateX = mc.gameSettings.thirdPersonView == 2 ? -1.0F : 1.0F;
+	    double distance = mc.thePlayer.getDistance(blockPos.getX(), blockPos.getY(), blockPos.getZ());
+	    double scale = plateScale.getInput();
+	    double base = 0.01666666753590107D * Math.sqrt(distance);
 
-        int x1 = -totalWidth / 2;
-        int y1 = -2;
-        int x2 = x1 + totalWidth;
-        int y2 = 26;
+	    glPushMatrix();
+	    glDisable(GL_DEPTH_TEST);
+	    GlStateManager.enableBlend();
+	    GlStateManager.blendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-        Gui.drawRect(x1, y1, x2, y2, new Color(0, 0, 0, 90).getRGB());
-        String dist = Math.round(mc.thePlayer.getDistance(blockPos.getX(), blockPos.getY(), blockPos.getZ())) + "m";
-        
-        if (showDistance.isToggled())
-        	mc.fontRendererObj.drawString(dist, -mc.fontRendererObj.getStringWidth(dist) / 2, 0, new Color(255, 255, 255, 255).getRGB());
-        
-        double offset = (blocks.size() * -17.5) / 2;
-        for (Block block : blocks) {
-            mc.getTextureManager().bindTexture(getBlockTexture(block));
-            Gui.drawModalRectWithCustomSizedTexture((int) offset, 10, 0, 0, 15, 15, 15, 15);
-            offset += 17.5;
-        }
-        GlStateManager.disableBlend();
-        glEnable(GL_DEPTH_TEST);
-        glPopMatrix();
-    }
+	    glTranslatef(
+	        (float) (blockPos.getX() - mc.getRenderManager().viewerPosX + 0.5),
+	        (float) (blockPos.getY() - mc.getRenderManager().viewerPosY + 2),
+	        (float) (blockPos.getZ() - mc.getRenderManager().viewerPosZ + 0.5)
+	    );
+	    glNormal3f(0.0F, 1.0F, 0.0F);
+	    glRotatef(-mc.getRenderManager().playerViewY, 0.0F, 1.0F, 0.0F);
+	    glRotatef(mc.getRenderManager().playerViewX, rotateX, 0.0F, 0.0F);
+	    glScaled(-base * scale, -base * scale, base * scale);
+
+	    List<Block> blocks = bedBlocks.get(index);
+	    int blockSize = (int) (17 * scale);
+	    int iconSize = (int) (15 * scale);
+	    int minWidth = blockSize;
+	    int totalWidth = Math.max(minWidth, blocks.size() * blockSize);
+
+	    int x1 = -totalWidth / 2;
+	    int y1 = (int) (-2 * scale);
+	    int x2 = x1 + totalWidth;
+	    int y2 = (int) (26 * scale);
+
+	    Gui.drawRect(x1, y1, x2, y2, new Color(0, 0, 0, 90).getRGB());
+
+	    String dist = Math.round(distance) + "m";
+        GlStateManager.scale(scale, scale, scale);
+        mc.fontRendererObj.drawString(dist, -(int)(mc.fontRendererObj.getStringWidth(dist) / 2.0), 0, new Color(255, 255, 255, 255).getRGB());
+
+	    double offset = (blocks.size() * (-17.5 * scale)) / 2;
+	    for (Block block : blocks) {
+	        mc.getTextureManager().bindTexture(getBlockTexture(block));
+	        Gui.drawModalRectWithCustomSizedTexture((int) offset, (int)(10 * scale), 0, 0, iconSize, iconSize, iconSize, iconSize);
+	        offset += 17.5 * scale;
+	    }
+
+	    GlStateManager.disableBlend();
+	    glEnable(GL_DEPTH_TEST);
+	    glPopMatrix();
+	}
+
 
     private void findBed(double x, double y, double z, int index) {
         BlockPos bedPos = new BlockPos(x, y, z);

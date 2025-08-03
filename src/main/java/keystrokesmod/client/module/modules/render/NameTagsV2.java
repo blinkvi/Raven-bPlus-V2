@@ -12,7 +12,6 @@ import keystrokesmod.client.module.ClientModule;
 import keystrokesmod.client.module.ModuleInfo;
 import keystrokesmod.client.module.setting.impl.SliderSetting;
 import keystrokesmod.client.module.setting.impl.TickSetting;
-import keystrokesmod.client.utils.CombatUtils;
 import keystrokesmod.client.utils.ReflectUtil;
 import keystrokesmod.client.utils.RenderUtils;
 import net.minecraft.client.renderer.GlStateManager;
@@ -21,7 +20,6 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemStack;
@@ -46,6 +44,8 @@ public class NameTagsV2 extends ClientModule {
         EntityLivingBase entity = event.entity;
 
         if (!(entity instanceof EntityPlayer)) return;
+        if (mc.gameSettings.thirdPersonView == 0) return;
+        
         if (rangeSetting.getInput() != 0.0D && mc.thePlayer.getDistanceToEntity(entity) > rangeSetting.getInput()) return;
 
         String displayName = entity.getDisplayName().getFormattedText();
@@ -59,6 +59,7 @@ public class NameTagsV2 extends ClientModule {
         List<EntityPlayer> validPlayers = new ArrayList<>();
         double range = rangeSetting.getInput();
         float partialTicks = ReflectUtil.getTimer().renderPartialTicks;
+        if (mc.gameSettings.thirdPersonView == 0) return;
 
         for (EntityPlayer entity : mc.theWorld.playerEntities) {
             if (!(entity instanceof EntityPlayer)) continue;
@@ -221,132 +222,56 @@ public class NameTagsV2 extends ClientModule {
 
     private void renderEnchantText(ItemStack is, int xPos, int yPos) {
         int newYPos = yPos - 24;
-        if (is.getEnchantmentTagList() != null && is.getEnchantmentTagList().tagCount() >= 6) {
-            mc.fontRendererObj.drawStringWithShadow("god", (float) (xPos * 2), (float) newYPos, 16711680);
-        } else {
-            if (is.getItem() instanceof ItemArmor) {
-                int protection = EnchantmentHelper.getEnchantmentLevel(Enchantment.protection.effectId, is);
-                int projectileProtection = EnchantmentHelper.getEnchantmentLevel(Enchantment.projectileProtection.effectId, is);
-                int blastProtectionLvL = EnchantmentHelper.getEnchantmentLevel(Enchantment.blastProtection.effectId, is);
-                int fireProtection = EnchantmentHelper.getEnchantmentLevel(Enchantment.fireProtection.effectId, is);
-                int thornsLvl = EnchantmentHelper.getEnchantmentLevel(Enchantment.thorns.effectId, is);
-                int unbreakingLvl = EnchantmentHelper.getEnchantmentLevel(Enchantment.unbreaking.effectId, is);
-                int remainingDurability = is.getMaxDamage() - is.getItemDamage();
-                if (durabilitySetting.isToggled()) {
-                    mc.fontRendererObj.drawStringWithShadow(String.valueOf(remainingDurability), (float) (xPos * 2), (float) yPos, 16777215);
-                }
 
-                if (protection > 0) {
-                    mc.fontRendererObj.drawStringWithShadow("prot" + protection, (float) (xPos * 2), (float) newYPos, -1);
-                    newYPos += 8;
-                }
+        int protection = EnchantmentHelper.getEnchantmentLevel(Enchantment.protection.effectId, is);
+        int powerLvl = EnchantmentHelper.getEnchantmentLevel(Enchantment.power.effectId, is);
+        int punchLvl = EnchantmentHelper.getEnchantmentLevel(Enchantment.punch.effectId, is);
+        int sharpnessLvl = EnchantmentHelper.getEnchantmentLevel(Enchantment.sharpness.effectId, is);
+        int knockbackLvl = EnchantmentHelper.getEnchantmentLevel(Enchantment.knockback.effectId, is);
+        int efficiencyLvl = EnchantmentHelper.getEnchantmentLevel(Enchantment.efficiency.effectId, is);
 
-                if (projectileProtection > 0) {
-                    mc.fontRendererObj.drawStringWithShadow("proj" + projectileProtection, (float) (xPos * 2), (float) newYPos, -1);
-                    newYPos += 8;
-                }
+        if (is.getItem() instanceof ItemArmor) {
+            int remainingDurability = is.getMaxDamage() - is.getItemDamage();
 
-                if (blastProtectionLvL > 0) {
-                    mc.fontRendererObj.drawStringWithShadow("bp" + blastProtectionLvL, (float) (xPos * 2), (float) newYPos, -1);
-                    newYPos += 8;
-                }
-
-                if (fireProtection > 0) {
-                    mc.fontRendererObj.drawStringWithShadow("frp" + fireProtection, (float) (xPos * 2), (float) newYPos, -1);
-                    newYPos += 8;
-                }
-
-                if (thornsLvl > 0) {
-                    mc.fontRendererObj.drawStringWithShadow("th" + thornsLvl, (float) (xPos * 2), (float) newYPos, -1);
-                    newYPos += 8;
-                }
-
-                if (unbreakingLvl > 0) {
-                    mc.fontRendererObj.drawStringWithShadow("unb" + unbreakingLvl, (float) (xPos * 2), (float) newYPos, -1);
-                    newYPos += 8;
-                }
+            if (durabilitySetting.isToggled()) {
+                mc.fontRendererObj.drawStringWithShadow(String.valueOf(remainingDurability), (float) (xPos * 2), (float) yPos, 0xFFFFFF);
             }
 
-            if (is.getItem() instanceof ItemBow) {
-                int powerLvl = EnchantmentHelper.getEnchantmentLevel(Enchantment.power.effectId, is);
-                int punchLvl = EnchantmentHelper.getEnchantmentLevel(Enchantment.punch.effectId, is);
-                int flameLvl = EnchantmentHelper.getEnchantmentLevel(Enchantment.flame.effectId, is);
-                int unbreakingLvl = EnchantmentHelper.getEnchantmentLevel(Enchantment.unbreaking.effectId, is);
-                if (powerLvl > 0) {
-                    mc.fontRendererObj.drawStringWithShadow("pow" + powerLvl, (float) (xPos * 2), (float) newYPos, -1);
-                    newYPos += 8;
-                }
+            if (protection > 0) {
+                mc.fontRendererObj.drawStringWithShadow("p" + protection, (float) (xPos * 2), (float) newYPos, 0xFFFFFF);
+                newYPos += 8;
+            }
+        }
 
-                if (punchLvl > 0) {
-                    mc.fontRendererObj.drawStringWithShadow("pun" + punchLvl, (float) (xPos * 2), (float) newYPos, -1);
-                    newYPos += 8;
-                }
-
-                if (flameLvl > 0) {
-                    mc.fontRendererObj.drawStringWithShadow("flame" + flameLvl, (float) (xPos * 2), (float) newYPos, -1);
-                    newYPos += 8;
-                }
-
-                if (unbreakingLvl > 0) {
-                    mc.fontRendererObj.drawStringWithShadow("unb" + unbreakingLvl, (float) (xPos * 2), (float) newYPos, -1);
-                    newYPos += 8;
-                }
+        if (is.getItem() instanceof ItemBow) {
+            if (powerLvl > 0) {
+                mc.fontRendererObj.drawStringWithShadow("pow" + powerLvl, (float) (xPos * 2), (float) newYPos, 0xFFFFFF);
+                newYPos += 8;
             }
 
-            if (is.getItem() instanceof ItemSword) {
-                int sharpnessLvl = EnchantmentHelper.getEnchantmentLevel(Enchantment.sharpness.effectId, is);
-                int knockbackLvl = EnchantmentHelper.getEnchantmentLevel(Enchantment.knockback.effectId, is);
-                int fireAspectLvl = EnchantmentHelper.getEnchantmentLevel(Enchantment.fireAspect.effectId, is);
-                int unbreakingLvl = EnchantmentHelper.getEnchantmentLevel(Enchantment.unbreaking.effectId, is);
-                if (sharpnessLvl > 0) {
-                    mc.fontRendererObj.drawStringWithShadow("sh" + sharpnessLvl, (float) (xPos * 2), (float) newYPos, -1);
-                    newYPos += 8;
-                }
+            if (punchLvl > 0) {
+                mc.fontRendererObj.drawStringWithShadow("pun" + punchLvl, (float) (xPos * 2), (float) newYPos, 0xFFFFFF);
+                newYPos += 8;
+            }
+        }
 
-                if (knockbackLvl > 0) {
-                    mc.fontRendererObj.drawStringWithShadow("kb" + knockbackLvl, (float) (xPos * 2), (float) newYPos, -1);
-                    newYPos += 8;
-                }
-
-                if (fireAspectLvl > 0) {
-                    mc.fontRendererObj.drawStringWithShadow("fire" + fireAspectLvl, (float) (xPos * 2), (float) newYPos, -1);
-                    newYPos += 8;
-                }
-
-                if (unbreakingLvl > 0) {
-                    mc.fontRendererObj.drawStringWithShadow("unb" + unbreakingLvl, (float) (xPos * 2), (float) newYPos, -1);
-                }
+        if (is.getItem() instanceof ItemSword) {
+            if (sharpnessLvl > 0) {
+                mc.fontRendererObj.drawStringWithShadow("sh" + sharpnessLvl, (float) (xPos * 2), (float) newYPos, 0xFFFFFF);
+                newYPos += 8;
             }
 
-            if (is.getItem() instanceof ItemTool) {
-                int unbreakingLvl = EnchantmentHelper.getEnchantmentLevel(Enchantment.unbreaking.effectId, is);
-                int efficiencyLvl = EnchantmentHelper.getEnchantmentLevel(Enchantment.efficiency.effectId, is);
-                int fortuneLvl = EnchantmentHelper.getEnchantmentLevel(Enchantment.fortune.effectId, is);
-                int silkTouchLvl = EnchantmentHelper.getEnchantmentLevel(Enchantment.silkTouch.effectId, is);
-                if (efficiencyLvl > 0) {
-                    mc.fontRendererObj.drawStringWithShadow("eff" + efficiencyLvl, (float) (xPos * 2), (float) newYPos, -1);
-                    newYPos += 8;
-                }
-
-                if (fortuneLvl > 0) {
-                    mc.fontRendererObj.drawStringWithShadow("fo" + fortuneLvl, (float) (xPos * 2), (float) newYPos, -1);
-                    newYPos += 8;
-                }
-
-                if (silkTouchLvl > 0) {
-                    mc.fontRendererObj.drawStringWithShadow("silk" + silkTouchLvl, (float) (xPos * 2), (float) newYPos, -1);
-                    newYPos += 8;
-                }
-
-                if (unbreakingLvl > 0) {
-                    mc.fontRendererObj.drawStringWithShadow("ub" + unbreakingLvl, (float) (xPos * 2), (float) newYPos, -1);
-                }
+            if (knockbackLvl > 0) {
+                mc.fontRendererObj.drawStringWithShadow("kb" + knockbackLvl, (float) (xPos * 2), (float) newYPos, 0xFFFFFF);
+                newYPos += 8;
             }
+        }
 
-            if (is.getItem() == Items.golden_apple && is.hasEffect()) {
-                mc.fontRendererObj.drawStringWithShadow("god", (float) (xPos * 2), (float) newYPos, -1);
+        if (is.getItem() instanceof ItemTool) {
+            if (efficiencyLvl > 0) {
+                mc.fontRendererObj.drawStringWithShadow("eff" + efficiencyLvl, (float) (xPos * 2), (float) newYPos, 0xFFFFFF);
+                newYPos += 8;
             }
-
         }
     }
 }

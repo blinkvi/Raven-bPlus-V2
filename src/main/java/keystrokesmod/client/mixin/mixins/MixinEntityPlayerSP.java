@@ -68,7 +68,7 @@ public abstract class MixinEntityPlayerSP extends AbstractClientPlayer {
 
     @Shadow
     protected abstract void sendHorseJump();
-
+    
 	@Overwrite
     public void onLivingUpdate() {
         if (sprintingTicksLeft > 0) {

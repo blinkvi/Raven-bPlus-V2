@@ -56,8 +56,6 @@ public class ModuleManager {
             
             new MurderMystery(),            
             new AutoHeader(),
-            new BHop(),
-            new Boost(),
             new Fly(),
             new Freeze(),
             new InvMove(),
