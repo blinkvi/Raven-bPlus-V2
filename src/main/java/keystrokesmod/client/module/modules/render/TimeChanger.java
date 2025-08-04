@@ -29,7 +29,7 @@ public class TimeChanger extends ClientModule {
     }
 	
 	@Override
-    public boolean onReceivePacket(Packet packet) {
+    public boolean onReceive(Packet packet) {
     	if (packet instanceof S03PacketTimeUpdate) {
 			return true;
 		} else if (packet instanceof S2BPacketChangeGameState) {

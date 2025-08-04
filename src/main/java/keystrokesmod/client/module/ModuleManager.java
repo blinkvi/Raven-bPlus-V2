@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import keystrokesmod.client.main.Raven;
 import keystrokesmod.client.module.modules.client.*;
 import keystrokesmod.client.module.modules.combat.*;
 import keystrokesmod.client.module.modules.macros.*;
@@ -79,6 +78,7 @@ public class ModuleManager {
             new AutoPlace(),
             new AutoTool(),
             new BedAura(),
+            new Blink(),
             new BridgeAssist(),
             new FallSpeed(),
             new FastBreak(),
@@ -142,7 +142,7 @@ public class ModuleManager {
     }
     
     private HUD getHUD() {
-        return (HUD) Raven.moduleManager.getModuleByClazz(HUD.class);
+        return (HUD) this.getModuleByClazz(HUD.class);
     }
 
     public void sort() {

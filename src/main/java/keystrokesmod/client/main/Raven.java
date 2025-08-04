@@ -22,7 +22,7 @@ public class Raven {
     public static final String VERSION = "1.0.26";
     public static boolean debugger = false;
 
-    public static final ModuleManager moduleManager = new ModuleManager();
+    public static ModuleManager moduleManager = new ModuleManager();
     public static CommandManager commandManager;
     public static ConfigManager configManager;
     public static ClientConfig clientConfig;
@@ -51,6 +51,7 @@ public class Raven {
         configManager = new ConfigManager();
 
         clientConfig = new ClientConfig();
+        
         clientConfig.applyConfig();
     }
 

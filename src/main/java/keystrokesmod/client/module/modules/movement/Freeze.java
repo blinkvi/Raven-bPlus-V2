@@ -41,7 +41,7 @@ public class Freeze extends ClientModule {
     }
     
     @Override
-    public boolean onSendPacket(Packet packet) {
+    public boolean onSend(Packet packet) {
         if (packet instanceof C03PacketPlayer) {
             return true;
         }
@@ -49,7 +49,7 @@ public class Freeze extends ClientModule {
     }
 
     @Override
-    public boolean onReceivePacket(Packet packet) {
+    public boolean onReceive(Packet packet) {
         if (packet instanceof S08PacketPlayerPosLook) {
             S08PacketPlayerPosLook p = (S08PacketPlayerPosLook) packet;
             x = p.getX();
