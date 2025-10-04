@@ -28,7 +28,7 @@ import net.minecraft.util.BlockPos;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
-@ModuleInfo(name = "Left Clicker", category = Category.Combat)
+@ModuleInfo(name = "LeftClicker", category = Category.Combat)
 public class LeftClicker extends ClientModule {
 	private final DescriptionSetting desc = new DescriptionSetting("Best with delay remover", this);
 	public DoubleSliderSetting leftCPS = new DoubleSliderSetting("Left CPS", this, 9.0, 13.0, 1.0, 60.0, 0.5);

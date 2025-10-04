@@ -12,7 +12,7 @@ import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
-@ModuleInfo(name = "Bridge Assist", category = Category.Player)
+@ModuleInfo(name = "BridgeAssist", category = Category.Player)
 public class BridgeAssist extends ClientModule {
 	private final DescriptionSetting desc = new DescriptionSetting("Best with fastplace, not autoplace", this);
 	private final SliderSetting waitFor = new SliderSetting("Wait time (ms)", this, 500.0, 0.0, 5000.0, 25.0);

@@ -897,30 +897,6 @@ public class Utils implements IMinecraft {
 			}
 		}
 
-		public static PositionMode getPostitionMode(final int marginX, final int marginY, final double height,
-				final double width) {
-			final int halfHeight = (int) (height / 4.0);
-			final int halfWidth = (int) width;
-			PositionMode positionMode = null;
-			if (marginY < halfHeight) {
-				if (marginX < halfWidth) {
-					positionMode = PositionMode.UPLEFT;
-				}
-				if (marginX > halfWidth) {
-					positionMode = PositionMode.UPRIGHT;
-				}
-			}
-			if (marginY > halfHeight) {
-				if (marginX < halfWidth) {
-					positionMode = PositionMode.DOWNLEFT;
-				}
-				if (marginX > halfWidth) {
-					positionMode = PositionMode.DOWNRIGHT;
-				}
-			}
-			return positionMode;
-		}
-
 		public static void d2p(final double x, final double y, final int radius, final int sides, final int color) {
 			final float a = (color >> 24 & 0xFF) / 255.0f;
 			final float r = (color >> 16 & 0xFF) / 255.0f;
@@ -988,10 +964,6 @@ public class Utils implements IMinecraft {
 			GL11.glDisable(3042);
 			GL11.glEnable(3553);
 			mc.entityRenderer.enableLightmap();
-		}
-
-		public enum PositionMode {
-			UPLEFT, UPRIGHT, DOWNLEFT, DOWNRIGHT;
 		}
 	}
 

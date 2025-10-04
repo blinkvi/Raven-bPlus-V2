@@ -16,7 +16,7 @@ import net.minecraft.scoreboard.Scoreboard;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-@ModuleInfo(name = "Auto Play", category = Category.Other)
+@ModuleInfo(name = "AutoPlay", category = Category.Other)
 public class AutoPlay extends ClientModule {
 	
 	private final DescriptionSetting desc = new DescriptionSetting("Only for Universocraft", this);

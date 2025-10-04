@@ -30,7 +30,7 @@ import net.minecraft.item.ItemSword;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
-@ModuleInfo(name = "Right Clicker", category = Category.Player)
+@ModuleInfo(name = "RightClicker", category = Category.Player)
 public class RightClicker extends ClientModule {
     private final DoubleSliderSetting rightCPS = new DoubleSliderSetting("RightCPS", this, 12.0, 16.0, 1.0, 60.0, 0.5);
     private final SliderSetting jitterRight = new SliderSetting("Jitter right", this, 0.0, 0.0, 3.0, 0.1);

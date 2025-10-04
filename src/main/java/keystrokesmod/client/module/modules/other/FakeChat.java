@@ -7,7 +7,7 @@ import keystrokesmod.client.utils.Utils;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IChatComponent;
 
-@ModuleInfo(name = "Fake Chat", category = Category.Other)
+@ModuleInfo(name = "FakeChat", category = Category.Other)
 public class FakeChat extends ClientModule {
     public static String msg = "&eThis is a fake chat message.";
     public static final String command = "fakechat";
@@ -16,8 +16,7 @@ public class FakeChat extends ClientModule {
     @Override
     public void onEnable() {
         if (FakeChat.msg.contains("\\n")) {
-            final String[] split2;
-            final String[] split = split2 =msg.split("\\\\n");
+            final String[] split2 =msg.split("\\\\n");
             for (final String s : split2) {
                 this.sm(s);
             }

@@ -14,7 +14,7 @@ import keystrokesmod.client.module.ModuleInfo;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-@ModuleInfo(name = "Chat Logger", category = Category.World)
+@ModuleInfo(name = "ChatLogger", category = Category.World)
 public class ChatLogger extends ClientModule {
 	private final File dir;
 	private File chatLog;

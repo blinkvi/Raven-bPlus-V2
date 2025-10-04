@@ -127,13 +127,10 @@ public class Velocity extends ClientModule {
 	}
     
     public enum Mode {
-        MOTION,
-        INTAVE,
-        JUMP
+        MOTION, INTAVE, JUMP;
     }
 
     public enum IntaveMode {
-        SAFE,
-        BLATANT,
+        SAFE, BLATANT;
     }
 }

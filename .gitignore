@@ -4,6 +4,7 @@
 .settings
 bin/
 Client.launch
+Raven-bPlus-V2_Client.launch
 run/
 .//build
 build/libs

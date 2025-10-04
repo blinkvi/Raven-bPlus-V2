@@ -11,7 +11,7 @@ import net.minecraft.network.play.server.S2BPacketChangeGameState;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
-@ModuleInfo(name = "Time Changer", category = Category.Render)
+@ModuleInfo(name = "TimeChanger", category = Category.Render)
 public class TimeChanger extends ClientModule {
 
 	public final SliderSetting time = new SliderSetting("Time", this, 0, 0, 1, 0.01f);

@@ -151,17 +151,17 @@ public class ModuleManager {
             modules.sort(Comparator.comparing(ClientModule::getName));
         }
 
-        modules.sort(Comparator.comparingInt(mod -> -hud.getFonts().getStringWidth(mod.getName())));
+        modules.sort(Comparator.comparingInt(mod -> -hud.getFont().getStringWidth(mod.getName())));
     }
 
     public void sortLongShort() {
     	HUD hud = getHUD();
-        modules.sort(Comparator.comparingInt(mod -> hud.getFonts().getStringWidth(mod.getName())));
+        modules.sort(Comparator.comparingInt(mod -> hud.getFont().getStringWidth(mod.getName())));
     }
 
     public void sortShortLong() {
     	HUD hud = getHUD();
-        modules.sort((a, b) -> hud.getFonts().getStringWidth(b.getName()) - hud.getFonts().getStringWidth(a.getName()));
+        modules.sort((a, b) -> hud.getFont().getStringWidth(b.getName()) - hud.getFont().getStringWidth(a.getName()));
     }
 
     public int numberOfModules() {
@@ -173,7 +173,7 @@ public class ModuleManager {
         int maxLength = 0;
         for (ClientModule mod : modules) {
             if (mod.isEnabled()) {
-                int width = hud.getFonts().getStringWidth(mod.getName());
+                int width = hud.getFont().getStringWidth(mod.getName());
                 if (width > maxLength) maxLength = width;
             }
         }
@@ -185,7 +185,7 @@ public class ModuleManager {
         int height = 0;
         for (ClientModule mod : modules) {
             if (mod.isEnabled()) {
-                height += hud.getFonts().getHeight() + margin;
+                height += hud.getFont().getHeight() + margin;
             }
         }
         return height;

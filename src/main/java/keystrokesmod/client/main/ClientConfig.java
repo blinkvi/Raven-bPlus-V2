@@ -136,7 +136,7 @@ public class ClientConfig implements IMinecraft {
             }
             else if (line.startsWith("HUDX~ ")) {
                 try {
-                    HUD.hudX = Integer.parseInt(line.replace("HUDX~ ", ""));
+                    HUD.hudX.set(Integer.parseInt(line.replace("HUDX~ ", "")))  ;
                 }
                 catch (Exception e) {
                     e.printStackTrace();
@@ -144,7 +144,7 @@ public class ClientConfig implements IMinecraft {
             }
             else if (line.startsWith("HUDY~ ")) {
                 try {
-                    HUD.hudY = Integer.parseInt(line.replace("HUDY~ ", ""));
+                    HUD.hudY.set(Integer.parseInt(line.replace("HUDY~ ", "")));
                 }
                 catch (Exception e) {
                     e.printStackTrace();
