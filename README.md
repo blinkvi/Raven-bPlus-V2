@@ -2,5 +2,4 @@
 
 
 ## Preview
-<img width="1365" height="720" alt="imagen" src="https://github.com/user-attachments/assets/92e35f48-dcdc-4441-a16a-d3852745ce84" />
-
+<img width="1915" height="971" alt="imagen" src="https://github.com/user-attachments/assets/74c5f2c3-d2cc-4679-9bee-921a8291fa53" />
